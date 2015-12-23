@@ -1,83 +1,79 @@
 package ideas.xml.dsl;
 
 public class XMLEncoder {
-    static public String encodeAllExceptApostrophe(String aString) throws NullPointerException {
-        if (aString == null) {
-            throw new NullPointerException("aString");
+    static public String encodeAllExceptApostrophe(String string) throws NullPointerException {
+        if (string == null) {
+            throw new NullPointerException("Empty encode field");
         }
-        int vStringLength = aString.length();
-        StringBuilder vResult = new StringBuilder(vStringLength);
-        int vLoop = 0;
-        while (vLoop < vStringLength) {
-            char vChar = aString.charAt(vLoop);
+        int stringLength = string.length();
+        StringBuilder result = new StringBuilder(stringLength);
+        for (int loop = 0; loop < stringLength; loop += 1) {
+            char ch = string.charAt(loop);
 
-            switch (vChar) {
+            switch (ch) {
                 case '&':
-                    vResult.append("&amp;");
+                    result.append("&amp;");
                     break;
                 case '<':
-                    vResult.append("&lt;");
+                    result.append("&lt;");
                     break;
                 case '>':
-                    vResult.append("&gt;");
+                    result.append("&gt;");
                     break;
                 case '"':
-                    vResult.append("&quot;");
+                    result.append("&quot;");
                     break;
                 default:
-                    if (vChar < 32) {
-                        vResult.append(' ');
+                    if (ch < 32) {
+                        result.append(' ');
                     } else {
-                        vResult.append(vChar);
+                        result.append(ch);
                     }
             }
-            vLoop += 1;
         }
 
-        return vResult.toString();
+        return result.toString();
     }
 
-    static public String encode(String aString) {
-        if (aString == null) {
-            throw new java.lang.NullPointerException("Empty encoded field.");
+    static public String encode(String string) {
+        if (string == null) {
+            throw new NullPointerException("Empty encoded field");
         }
 
-        int vStringLength = aString.length();
-        StringBuilder vResult = new StringBuilder(vStringLength);
-        int vLoop = 0;
-        while (vLoop < vStringLength) {
-            char vChar = aString.charAt(vLoop);
+        int stringLength = string.length();
+        StringBuilder result = new StringBuilder(stringLength);
+        for (int loop = 0;loop < stringLength; loop += 1) {
+            char ch = string.charAt(loop);
 
-            switch (vChar) {
+            switch (ch) {
                 case '&':
-                    vResult.append("&amp;");
+                    result.append("&amp;");
                     break;
                 case '<':
-                    vResult.append("&lt;");
+                    result.append("&lt;");
                     break;
                 case '>':
-                    vResult.append("&gt;");
+                    result.append("&gt;");
                     break;
                 case '"':
-                    vResult.append("&quot;");
+                    result.append("&quot;");
                     break;
                 case '\'':
-                    vResult.append("&apos;");
+                    result.append("&apos;");
                     break;
                 default:
-                    if (vChar < 32) {
-                        vResult.append(' ');
-                    } else if (vChar > 127) {
-                        vResult.append('&')
+                    if (ch < 32) {
+                        result.append(' ');
+                    } else if (ch > 127) {
+                        result.append('&')
                                 .append('#')
-                                .append((int) vChar)
+                                .append((int) ch)
                                 .append(';');
                     } else {
-                        vResult.append(vChar);
+                        result.append(ch);
                     }
             }
-            vLoop += 1;
         }
-        return vResult.toString();
+        return result.toString();
     }
 }
