@@ -68,8 +68,91 @@ public class PaymentValue {
         this.channelUsed = channelUsed;
     }
 
-
     public String asString(MarshallPayment marshaller) {
         return marshaller.marshall(this);
+    }
+
+    public String getCreatorApplicationName() {
+        return creatorApplicationName;
+    }
+
+    public String getReference() {
+        return reference;
+    }
+
+    public String getCreatorClientID() {
+        return creatorClientID;
+    }
+
+    public String getValueDate() {
+        return valueDate;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public String getAmount() {
+        return amount;
+    }
+
+    public String getDebitApplication() {
+        return debitApplication;
+    }
+
+    public String getDebitSortCode() {
+        return debitSortCode;
+    }
+
+    public String getDebitAccountNumber() {
+        return debitAccountNumber;
+    }
+
+    public String getDebitAccountName() {
+        return debitAccountName;
+    }
+
+    public String getDebitPaymentReference() {
+        return debitPaymentReference;
+    }
+
+    public String getCreditApplication() {
+        return creditApplication;
+    }
+
+    public String getCreditSortCode() {
+        return creditSortCode;
+    }
+
+    public String getCreditAccountNumber() {
+        return creditAccountNumber;
+    }
+
+    public String getCreditAccountName() {
+        return creditAccountName;
+    }
+
+    public String getCreditPaymentReference() {
+        return creditPaymentReference;
+    }
+
+    public String getTransactionDate() {
+        return transactionDate;
+    }
+
+    public String getTransactionTime() {
+        return transactionTime;
+    }
+
+    public String getDebitLedgerAccountNumber() {
+        return debitLedgerAccountNumber;
+    }
+
+    public String getCreditLedgeAccountNumber() {
+        return creditLedgeAccountNumber;
+    }
+
+    public String getChannelUsed() {
+        return channelUsed;
     }
 }

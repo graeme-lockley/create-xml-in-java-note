@@ -52,10 +52,21 @@ public class XMLBuilderTest {
     }
 
     @Test
-    public void dom_dsl_marshall_should_equal_the_string_builder__dsl_marshall() throws Exception {
+    public void dom_dsl_marshall_should_equal_the_string_builder_dsl_marshall() throws Exception {
         final Diff diff = DiffBuilder
                 .compare(Input.fromString(PAYMENT_VALUE.asString(new DOMDSLMarshallPayment())))
                 .withTest(Input.fromString(PAYMENT_VALUE.asString(new StringBuilderDSLMarshallPayment())))
+                .build();
+
+        assertFalse(diff.hasDifferences());
+    }
+
+    @Test
+    public void dom_dsl_marshall_should_equal_the_freemarker_marshall() throws Exception {
+        final Diff diff = DiffBuilder
+                .compare(Input.fromString(PAYMENT_VALUE.asString(new DOMDSLMarshallPayment())))
+                .withTest(Input.fromString(PAYMENT_VALUE.asString(new FreeMarkerMarshallPayment())))
+                .ignoreWhitespace()
                 .build();
 
         assertFalse(diff.hasDifferences());

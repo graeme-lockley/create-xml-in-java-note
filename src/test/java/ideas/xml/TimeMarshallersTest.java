@@ -49,6 +49,13 @@ public class TimeMarshallersTest {
             }
         }.execute().displayTiming();
 
+        new TimeCode("FreeMarker") {
+            @Override
+            public String bodyToTime() throws Exception {
+                return PAYMENT_VALUE.asString(new FreeMarkerMarshallPayment());
+            }
+        }.execute().displayTiming();
+
         new TimeCode("JAXB") {
             @Override
             public String bodyToTime() throws Exception {
