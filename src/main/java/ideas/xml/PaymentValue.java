@@ -21,7 +21,7 @@ public class PaymentValue {
     public final String transactionTime;
     public final String debitLedgerAccountNumber;
     public final String creditLedgeAccountNumber;
-    public final String channelUsed;
+    public final String correlationID;
 
     public PaymentValue(
             String creatorApplicationName,
@@ -44,7 +44,7 @@ public class PaymentValue {
             String transactionTime,
             String debitLedgerAccountNumber,
             String creditLedgeAccountNumber,
-            String channelUsed) {
+            String correlationID) {
         this.creatorApplicationName = creatorApplicationName;
         this.reference = reference;
         this.creatorClientID = creatorClientID;
@@ -65,7 +65,7 @@ public class PaymentValue {
         this.transactionTime = transactionTime;
         this.debitLedgerAccountNumber = debitLedgerAccountNumber;
         this.creditLedgeAccountNumber = creditLedgeAccountNumber;
-        this.channelUsed = channelUsed;
+        this.correlationID = correlationID;
     }
 
     public String asString(MarshallPayment marshaller) {
@@ -152,7 +152,7 @@ public class PaymentValue {
         return creditLedgeAccountNumber;
     }
 
-    public String getChannelUsed() {
-        return channelUsed;
+    public String getCorrelationID() {
+        return correlationID;
     }
 }

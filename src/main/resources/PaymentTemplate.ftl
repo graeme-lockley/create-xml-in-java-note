@@ -1,5 +1,5 @@
 <payment>
-    <creator application-name="${payment.creatorApplicationName}" client-id="${payment.creatorClientID}" channel-id="${payment.channelUsed}"/>
+    <creator application-name="${payment.creatorApplicationName}" client-id="${payment.creatorClientID}" correlation-id="${payment.correlationID}"/>
     <reference>${payment.reference}</reference>
     <when year="${payment.transactionDate[0..3]}" month="${payment.transactionDate[4..5]}" day="${payment.transactionDate[6..7]}" hour="${payment.transactionTime[0..1]}" minute="${payment.transactionTime[2..3]}" second="${payment.transactionTime[4..5]}"/>
     <action-date year="${payment.valueDate[0..3]}" month="${payment.valueDate[4..5]}" day="${payment.valueDate[6..7]}"/>

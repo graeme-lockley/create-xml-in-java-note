@@ -11,7 +11,7 @@ public class JAXBMarshallPayment implements MarshallPayment {
         generated.CreatorType createApplication = new generated.CreatorType();
         createApplication.setApplicationName(paymentValueValue.creatorApplicationName);
         createApplication.setClientId(paymentValueValue.creatorClientID);
-        createApplication.setChannelId(paymentValueValue.channelUsed);
+        createApplication.setCorrelationId(paymentValueValue.correlationID);
 
         generated.TimestampType when = new generated.TimestampType();
         when.setYear(paymentValueValue.transactionDate.substring(0, 4));

@@ -12,7 +12,7 @@ public abstract class DSLMarshallPayment implements MarshallPayment {
                                 attributes()
                                         .add("application-name", value.creatorApplicationName)
                                         .add("client-id", value.creatorClientID)
-                                        .add("channel-id", value.channelUsed))
+                                        .add("correlation-id", value.correlationID))
                         .addElement("reference", value.reference)
                         .addElement("when",
                                 attributes()
