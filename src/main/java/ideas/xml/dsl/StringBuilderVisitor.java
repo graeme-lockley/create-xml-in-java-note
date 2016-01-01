@@ -12,7 +12,7 @@ public class StringBuilderVisitor implements XMLVisitor {
         result.append("<").append(xmlElement.name());
 
         for (XMLAttribute attr : xmlElement.attributes()) {
-            result.append(" ").append(attr.name()).append("='").append(XMLEncoder.encodeAllExceptApostrophe(attr.value())).append("'");
+            result.append(" ").append(attr.name()).append("='").append(XMLEncoder.encode(attr.value())).append("'");
         }
 
         if (xmlElement.bodyElements().isEmpty()) {
