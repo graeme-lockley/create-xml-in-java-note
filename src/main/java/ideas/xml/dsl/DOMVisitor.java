@@ -7,10 +7,7 @@ import org.w3c.dom.Text;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.StringWriter;
@@ -18,11 +15,23 @@ import java.io.StringWriter;
 public class DOMVisitor implements XMLVisitor {
     private final Document doc;
     private Element currentElement = null;
+    private static DocumentBuilder docBuilder;
+    private static Transformer transformer;
+
+    static {
+        try {
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            docBuilder = docFactory.newDocumentBuilder();
+
+            TransformerFactory tf = TransformerFactory.newInstance();
+            transformer = tf.newTransformer();
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+        } catch (ParserConfigurationException | TransformerConfigurationException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
 
     public DOMVisitor() throws ParserConfigurationException {
-        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-
         doc = docBuilder.newDocument();
     }
 
@@ -68,9 +77,6 @@ public class DOMVisitor implements XMLVisitor {
 
     public String asString() {
         try {
-            TransformerFactory tf = TransformerFactory.newInstance();
-            Transformer transformer = tf.newTransformer();
-            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
             StringWriter writer = new StringWriter();
             transformer.transform(new DOMSource(doc), new StreamResult(writer));
             return writer.getBuffer().toString();
