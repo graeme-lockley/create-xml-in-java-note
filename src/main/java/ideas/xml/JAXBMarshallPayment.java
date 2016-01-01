@@ -1,11 +1,37 @@
 package ideas.xml;
 
+import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import java.io.File;
 import java.io.StringWriter;
 
 public class JAXBMarshallPayment implements MarshallPayment {
+    private static final Marshaller m;
+
+    static {
+        try {
+            JAXBContext context = JAXBContext.newInstance(generated.Payment.class);
+            m = context.createMarshaller();
+            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.FALSE);
+            m.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
+
+            SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            Schema schema = schemaFactory.newSchema(new File("target/classes/Payment.xsd"));
+            m.setSchema(schema);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    public JAXBMarshallPayment() {
+    }
+
     @Override
     public String marshall(PaymentValue paymentValueValue) {
         generated.CreatorType createApplication = new generated.CreatorType();
@@ -53,12 +79,6 @@ public class JAXBMarshallPayment implements MarshallPayment {
         payment.setCreditLeg(creditLeg);
 
         try {
-            JAXBContext context = JAXBContext.newInstance(generated.Payment.class);
-            Marshaller m = context.createMarshaller();
-
-            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.FALSE);
-            m.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
-
             StringWriter stringWriter = new StringWriter();
             m.marshal(payment, stringWriter);
             return stringWriter.toString();
