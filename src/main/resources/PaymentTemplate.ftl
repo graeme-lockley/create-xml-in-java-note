@@ -1,3 +1,4 @@
+<#escape c as c?xml>
 <payment>
     <creator application-name="${payment.creatorApplicationName}" client-id="${payment.creatorClientID}" correlation-id="${payment.correlationID}"/>
     <reference>${payment.reference}</reference>
@@ -42,3 +43,4 @@
 </#if>
     />
 </payment>
+</#escape>
