@@ -12,19 +12,12 @@ import javax.xml.validation.SchemaFactory;
 import java.io.File;
 import java.io.StringWriter;
 
-public class JAXBMarshallPayment implements MarshallPayment {
-    protected static final Marshaller m;
-
-    static {
-        m = createMarshaller(generated.Payment.class);
-        attachSchema(m, "target/classes/Payment.xsd");
-    }
-
+public abstract class JAXBMarshallPayment implements MarshallPayment {
     public JAXBMarshallPayment() {
     }
 
     @Override
-    public String marshall(PaymentValue paymentValueValue) {
+    public final String marshall(PaymentValue paymentValueValue) {
         generated.Payment payment = getPayment(paymentValueValue);
 
         try {
@@ -36,9 +29,7 @@ public class JAXBMarshallPayment implements MarshallPayment {
         }
     }
 
-    public Marshaller getMarshaller() {
-        return m;
-    }
+    public abstract Marshaller getMarshaller();
 
     protected Payment getPayment(PaymentValue paymentValueValue) {
         generated.CreatorType createApplication = new generated.CreatorType();

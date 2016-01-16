@@ -28,6 +28,8 @@ public class TimeMarshallersTest {
 
     @Test
     public void should_time_each_of_the_different_marshaller_implementations() throws Exception {
+        TimeCode.ITERATIONS = 10000;
+
         new TimeCode("Original") {
             @Override
             public String bodyToTime() throws Exception {
@@ -56,10 +58,31 @@ public class TimeMarshallersTest {
             }
         }.execute().displayTiming();
 
-        new TimeCode("JAXB") {
+        new TimeCode("JAXB Naive Schema") {
             @Override
             public String bodyToTime() throws Exception {
-                return PAYMENT_VALUE.asString(new JAXBMarshallPayment());
+                return PAYMENT_VALUE.asString(new NaiveSchemaJAXBMarshallPayment());
+            }
+        }.execute().displayTiming();
+
+        new TimeCode("JAXB Naive Schemaless") {
+            @Override
+            public String bodyToTime() throws Exception {
+                return PAYMENT_VALUE.asString(new NaiveSchemalessJAXBMarshallPayment());
+            }
+        }.execute().displayTiming();
+
+        new TimeCode("JAXB Efficient Schema") {
+            @Override
+            public String bodyToTime() throws Exception {
+                return PAYMENT_VALUE.asString(new EfficientSchemaJAXBMarshallPayment());
+            }
+        }.execute().displayTiming();
+
+        new TimeCode("JAXB Efficient Schemaless") {
+            @Override
+            public String bodyToTime() throws Exception {
+                return PAYMENT_VALUE.asString(new EfficientSchemalessJAXBMarshallPayment());
             }
         }.execute().displayTiming();
     }
