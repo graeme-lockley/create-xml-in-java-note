@@ -32,10 +32,40 @@ public class XMLBuilderTest {
             "98729872398734");
 
     @Test
-    public void dom_dsl_marshall_should_equal_the_jaxb_marshall() throws Exception {
+    public void dom_dsl_marshall_should_equal_the_naive_schema_jaxb_marshall() throws Exception {
         final Diff diff = DiffBuilder
                 .compare(Input.fromString(PAYMENT_VALUE.asString(new DOMDSLMarshallPayment())))
-                .withTest(Input.fromString(PAYMENT_VALUE.asString(new JAXBMarshallPayment())))
+                .withTest(Input.fromString(PAYMENT_VALUE.asString(new NaiveSchemaJAXBMarshallPayment())))
+                .build();
+
+        assertFalse(diff.hasDifferences());
+    }
+
+    @Test
+    public void dom_dsl_marshall_should_equal_the_naive_schemaless_jaxb_marshall() throws Exception {
+        final Diff diff = DiffBuilder
+                .compare(Input.fromString(PAYMENT_VALUE.asString(new DOMDSLMarshallPayment())))
+                .withTest(Input.fromString(PAYMENT_VALUE.asString(new NaiveSchemalessJAXBMarshallPayment())))
+                .build();
+
+        assertFalse(diff.hasDifferences());
+    }
+
+    @Test
+    public void dom_dsl_marshall_should_equal_the_efficient_schema_jaxb_marshall() throws Exception {
+        final Diff diff = DiffBuilder
+                .compare(Input.fromString(PAYMENT_VALUE.asString(new DOMDSLMarshallPayment())))
+                .withTest(Input.fromString(PAYMENT_VALUE.asString(new EfficientSchemaJAXBMarshallPayment())))
+                .build();
+
+        assertFalse(diff.hasDifferences());
+    }
+
+    @Test
+    public void dom_dsl_marshall_should_equal_the_efficient_schemaless_jaxb_marshall() throws Exception {
+        final Diff diff = DiffBuilder
+                .compare(Input.fromString(PAYMENT_VALUE.asString(new DOMDSLMarshallPayment())))
+                .withTest(Input.fromString(PAYMENT_VALUE.asString(new EfficientSchemalessJAXBMarshallPayment())))
                 .build();
 
         assertFalse(diff.hasDifferences());

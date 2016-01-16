@@ -13,7 +13,7 @@ import java.io.File;
 import java.io.StringWriter;
 
 public class JAXBMarshallPayment implements MarshallPayment {
-    private static final Marshaller m;
+    protected static final Marshaller m;
 
     static {
         m = createMarshaller(generated.Payment.class);
@@ -29,11 +29,15 @@ public class JAXBMarshallPayment implements MarshallPayment {
 
         try {
             StringWriter stringWriter = new StringWriter();
-            m.marshal(payment, stringWriter);
+            getMarshaller().marshal(payment, stringWriter);
             return stringWriter.toString();
         } catch (JAXBException ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    public Marshaller getMarshaller() {
+        return m;
     }
 
     protected Payment getPayment(PaymentValue paymentValueValue) {
