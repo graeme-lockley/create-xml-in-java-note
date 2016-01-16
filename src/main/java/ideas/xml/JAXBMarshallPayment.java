@@ -1,5 +1,8 @@
 package ideas.xml;
 
+import generated.Payment;
+import org.xml.sax.SAXException;
+
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -13,20 +16,8 @@ public class JAXBMarshallPayment implements MarshallPayment {
     private static final Marshaller m;
 
     static {
-        try {
-            JAXBContext context = JAXBContext.newInstance(generated.Payment.class);
-            m = context.createMarshaller();
-            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.FALSE);
-            m.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
-
-            SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-            Schema schema = schemaFactory.newSchema(new File("target/classes/Payment.xsd"));
-            m.setSchema(schema);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
+        m = createMarshaller(generated.Payment.class);
+        attachSchema(m, "target/classes/Payment.xsd");
     }
 
     public JAXBMarshallPayment() {
@@ -34,6 +25,18 @@ public class JAXBMarshallPayment implements MarshallPayment {
 
     @Override
     public String marshall(PaymentValue paymentValueValue) {
+        generated.Payment payment = getPayment(paymentValueValue);
+
+        try {
+            StringWriter stringWriter = new StringWriter();
+            m.marshal(payment, stringWriter);
+            return stringWriter.toString();
+        } catch (JAXBException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    protected Payment getPayment(PaymentValue paymentValueValue) {
         generated.CreatorType createApplication = new generated.CreatorType();
         createApplication.setApplicationName(paymentValueValue.creatorApplicationName);
         createApplication.setClientId(paymentValueValue.creatorClientID);
@@ -68,7 +71,7 @@ public class JAXBMarshallPayment implements MarshallPayment {
         creditLeg.setReference(paymentValueValue.creditPaymentReference);
         creditLeg.setLedgerAccountNumber(paymentValueValue.creditLedgeAccountNumber);
 
-        generated.Payment payment = new generated.Payment();
+        Payment payment = new Payment();
         payment.setCreator(createApplication);
         payment.setReference(paymentValueValue.reference);
         payment.setWhen(when);
@@ -78,12 +81,30 @@ public class JAXBMarshallPayment implements MarshallPayment {
         payment.setDebitLeg(debitLeg);
         payment.setCreditLeg(creditLeg);
 
+        return payment;
+    }
+
+    public static Marshaller createMarshaller(Class classToBind) {
         try {
-            StringWriter stringWriter = new StringWriter();
-            m.marshal(payment, stringWriter);
-            return stringWriter.toString();
-        } catch (JAXBException e) {
-            throw new RuntimeException(e);
+            JAXBContext context = JAXBContext.newInstance(classToBind);
+
+            Marshaller marshall = context.createMarshaller();
+            marshall.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.FALSE);
+            marshall.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
+
+            return marshall;
+        } catch (JAXBException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    public static void attachSchema(Marshaller marshaller, String schemaName) {
+        try {
+            SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            Schema schema = schemaFactory.newSchema(new File(schemaName));
+            marshaller.setSchema(schema);
+        } catch (SAXException ex) {
+            throw new RuntimeException(ex);
         }
     }
 }
